@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { setCookie } from 'cookies-next';
 
 interface AuthTypes {
   username: string;
@@ -7,7 +8,7 @@ interface AuthTypes {
 }
 const useAuthHook = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<any>({});
   const router = useRouter();
 
   const handleRegister = async (userInfo: AuthTypes, e: React.MouseEvent) => {
@@ -31,6 +32,7 @@ const useAuthHook = () => {
       if (!response.ok || response.status >= 400) {
         return;
       } else {
+        setCookie('auth_token', data.token);
         router.push('/');
       }
     } catch (error: any) {
@@ -48,6 +50,7 @@ const useAuthHook = () => {
       const response = await fetch('http://localhost:4000/auth/login', {
         method: 'POST',
         credentials: 'include',
+
         body: JSON.stringify({
           username,
           password,
@@ -58,9 +61,12 @@ const useAuthHook = () => {
       });
       const data = await response.json();
       setData(data);
+
       if (!response.ok || response.status >= 400) {
         return;
       } else {
+        setCookie('auth_token', data.token);
+
         router.push('/');
       }
     } catch (error: any) {
