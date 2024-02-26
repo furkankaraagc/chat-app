@@ -15,6 +15,6 @@ router
   .get(rateLimiter(60, 4000), sessionHandler)
   .post(validation, loginHandler);
 
-router.post('/register', rateLimiter(40, 10), validation, registerHandler);
+router.post('/register', rateLimiter(4000, 1000), validation, registerHandler);
 
 export default router;

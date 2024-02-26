@@ -1,13 +1,15 @@
-import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { baseURL } from './utils/utils';
-import { cookies } from 'next/headers';
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(request: NextRequest) {
+interface ResponseType<T> {
+  loggedIn: boolean;
+  data: T;
+}
+
+export async function middleware<T>(request: NextRequest) {
   const url = `${baseURL}/auth/login `;
   let token = request.cookies.get('auth_token');
-  let data: any = '';
+  let data: ResponseType<T> | null = null;
 
   try {
     const res = await fetch(url, {
@@ -26,10 +28,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
   if (!data?.loggedIn && !request.nextUrl.pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/auth', request.url));
+    return NextResponse.redirect(new URL('/auth/login', request.url));
   }
 }
 
 export const config = {
-  matcher: ['/protected', '/auth'],
+  matcher: ['/', '/auth/login', '/auth/register'],
 };

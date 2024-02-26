@@ -3,40 +3,66 @@ import redisClient from '../redis/redis';
 
 export const authorizeUser = async (socket: any, next: any) => {
   const token = socket.handshake.auth.token;
+  if (!token) {
+    return next(new Error('no token'));
+  }
   try {
     const decoded: any = await jwtVerify(token, 'secret_key');
-    console.log('decodedded', decoded);
     socket.user = { ...decoded };
-    console.log('redis icin', socket.user.username);
+
+    const friendList = await redisClient.smembers(
+      `friends:${socket.user.username}`,
+    );
+    const roomList = await redisClient.smembers(
+      `rooms:${socket.user.username}`,
+    );
+    const friendsRoom = await redisClient.smembers(
+      `friendsroom:${socket.user.username}`,
+    );
+
+    roomList.forEach((roomid) => {
+      socket.join(roomid);
+    });
+
     await redisClient.hset(
       `userid:${socket.user.username}`,
       'userid',
       socket.user.userid,
+      'connected',
+      'true',
     );
+    let friendListArray = [];
+    for (let friend of friendsRoom) {
+      const splitted = friend.split('.');
+      const room_id = splitted[1];
+
+      const userInfo = await redisClient.hgetall(`userid:${splitted[0]}`);
+      const roomInfo = await redisClient.hgetall(`room_id:${room_id}`);
+      const notification = await redisClient.hget(
+        `userid:${socket.user.username}`,
+        room_id,
+      );
+      friendListArray.push({
+        username: splitted[0],
+        userid: userInfo.userid,
+        connected: userInfo.connected,
+        room_id: splitted[1],
+        notification,
+        last_message: roomInfo.last_message,
+        last_message_by: roomInfo.last_message_by,
+        last_message_timestamp: roomInfo.last_message_timestamp,
+      });
+    }
+
+    if (roomList.length > 0) {
+      socket.to(roomList).emit('connected', 'true', socket.user.username);
+    }
+    socket.emit('friends', friendListArray);
+    socket.emit('userInfo', socket.user.userid, socket.user.username);
+
     next();
   } catch (error) {
     console.log(error);
     next(new Error('not authorized'));
   }
-};
-export const addFriend = async (socket: any, friendName: any, cb: any) => {
-  if (friendName === socket.user.username) {
-    return cb({ done: false, error: 'cannot add yourself' });
-  }
-  const friendUserId = await redisClient.hget(`userid:${friendName}`, 'userid');
-  if (!friendUserId) {
-    return cb({ done: false, error: "User doesn't exist!" });
-  }
-
-  const currentFriendList = await redisClient.lrange(
-    `friends:${socket.user.username}`,
-    0,
-    -1,
-  );
-
-  if (currentFriendList && currentFriendList.indexOf(friendName) !== -1) {
-    return cb({ done: false, error: 'Friend already added!' });
-  }
-  await redisClient.lpush(`friends:${socket.user.username}`, friendName);
-  cb({ done: true });
 };

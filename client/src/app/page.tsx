@@ -1,14 +1,15 @@
 'use client';
 
-import useSocket from '@/hooks/useSocket';
-import Link from 'next/link';
+import ChatLeftSide from '@/components/chat/chatLeftSide/ChatLeftSide';
+import ChatLogSide from '@/components/chat/chatRightSide/ChatLogSide';
 
 export default function Home() {
-  useSocket();
   return (
-    <div>
-      <Link href='/auth'>Auth</Link>
-      <Link href='/protected'>protected</Link>
+    <div className='bg-[#0C1318] h-screen p-10  w-screen  '>
+      <div className='bg-[#111B21] h-full w-full flex text-white'>
+        <ChatLeftSide />
+        <ChatLogSide />
+      </div>
     </div>
   );
 }
