@@ -15,7 +15,6 @@ const notificationHandler = async (
     await redisClient.hset(`userid:${socket.user.username}`, room_id, 0);
     socket.emit('clearNotify', room_id);
   } else if (status === 'disconnected') {
-    console.log(' vzxzcxxzczc disconnected');
     await redisClient.sadd(
       `offlineUsersInTheRoom:${room_id}`,
       socket.user.username,

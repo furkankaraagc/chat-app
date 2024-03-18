@@ -2,13 +2,15 @@ import { pushMessageToChatLog } from '@/redux/features/chatSlice';
 import { setFriendList, setUserInfo } from '@/redux/features/userSlice';
 import { RootState } from '@/redux/store';
 import socket from '@/socket';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 const useSocket = () => {
+  const [onlineList, setOnlineList] = useState<any>([]);
   const { friendList, userInfo } = useSelector(
     (state: RootState) => state.userSlice.value,
   );
   const dispatch = useDispatch();
+  console.log(onlineList);
 
   useEffect(() => {
     socket.connect();
@@ -25,7 +27,7 @@ const useSocket = () => {
       }
     });
     socket.on('friends', (friendList) => {
-      console.log(friendList);
+      console.log('friendList', friendList);
       dispatch(setFriendList(friendList));
     });
     socket.on('userInfo', (userid, username) => {
@@ -33,7 +35,6 @@ const useSocket = () => {
         userid,
         username,
       };
-      console.log('USERINFOOO', userInfo);
       dispatch(setUserInfo(userInfo));
     });
     socket.on('connect_error', (err) => {
@@ -93,6 +94,9 @@ const useSocket = () => {
         }
       },
     );
+    socket.on('joinAfterFriendAdd', (friendName) => {
+      socket.emit('joinAfterFriendAdd', friendName);
+    });
 
     return () => {
       socket.off('connected');
@@ -103,6 +107,7 @@ const useSocket = () => {
       socket.off('incrNotify');
       socket.off('clearNotify');
       socket.off('updateLastMessage');
+      socket.off('joinAfterFriendAdd');
     };
   }, [friendList]);
 };

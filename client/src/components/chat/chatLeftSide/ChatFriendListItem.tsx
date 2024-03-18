@@ -18,8 +18,6 @@ const ChatFriendListItem = ({ item }: any) => {
     return formatDistanceToNow(providedDate, { addSuffix: true });
   };
 
-  console.log(item.last_message_timestamp);
-
   return (
     <article
       onClick={() => dispatch(setSelectedChat(item))}
@@ -29,7 +27,7 @@ const ChatFriendListItem = ({ item }: any) => {
           : 'hover:bg-[#1F2C33]'
       }  active:opacity-85 `}
     >
-      <section className='flex gap-2'>
+      <section className='flex gap-3'>
         <section className='relative'>
           <div className='rounded-full h-16 w-16 bg-gray-600 flex justify-center items-center'>
             <Image src={'/person.svg'} alt='' width={50} height={50} />
@@ -38,7 +36,7 @@ const ChatFriendListItem = ({ item }: any) => {
             <div className='absolute bottom-0 right-1 h-5 w-5 bg-green-500 rounded-full border-[2px] border-black'></div>
           )}
         </section>
-        <article className='flex flex-col gap-2'>
+        <article className='flex flex-col gap-1'>
           <h2>{item.username}</h2>
           {item.last_message && (
             <section
@@ -56,7 +54,7 @@ const ChatFriendListItem = ({ item }: any) => {
       </section>
 
       {item.last_message_timestamp && (
-        <span className='text-sm pt-3 text-gray-300'>
+        <span className='text-sm max-w-[70px]  text-gray-300'>
           {formatTime(item.last_message_timestamp)}
         </span>
       )}

@@ -1,0 +1,29 @@
+version: '1.0'
+
+services:
+  api:
+    container_name: nodejs
+    build:
+      context: .
+      target: production
+    depends_on:
+      - redis
+      - db
+    ports:
+      - 4000:4000
+  redis:
+    container_name: redis
+    image: 'redis:latest'
+    ports:
+      - 6379:6379
+  db:
+    container_name: postgres
+    image: 'postgres:16'
+    environment:
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_USER: furkankaraagac
+      POSTGRES_DB: dockerpostgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

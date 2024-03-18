@@ -1,6 +1,9 @@
+import { Socket } from 'socket.io';
 import redisClient from '../redis/redis';
 
-export const onDisconnect = async (socket: any) => {
+export const onDisconnect = async (
+  socket: Socket & { user: { username: string } },
+) => {
   console.log(`User has left ${socket.user.username}`);
   await redisClient.hset(
     `userid:${socket.user.username}`,
@@ -23,7 +26,6 @@ export const onDisconnect = async (socket: any) => {
       connected,
     });
   }
-  console.log('BURASI disconnected', friendList, roomList);
 
   for (let room_id of roomList) {
     await redisClient.sadd(

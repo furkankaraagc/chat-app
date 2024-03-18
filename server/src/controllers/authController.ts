@@ -61,7 +61,9 @@ export const loginHandler = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to connect to database' });
+    res
+      .status(500)
+      .json({ error: 'Failed to connect to database', error2: error });
   } finally {
     client.release();
   }
@@ -106,7 +108,9 @@ export const registerHandler = async (req: Request, res: Response) => {
         .json({ loggedIn: false, error: 'Username already taken' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to connect to database' });
+    res
+      .status(500)
+      .json({ error: 'Failed to connect to database', error2: error });
   } finally {
     client.release();
   }

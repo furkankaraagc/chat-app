@@ -1,12 +1,26 @@
+import { Server, Socket } from 'socket.io';
 import pool from '../db';
 import redisClient from '../redis/redis';
 
-export const sendMessage = async (socket: any, io: any, messageInfo: any) => {
+export interface MessageInfo {
+  receiver_id: string;
+  message_content: string;
+  sender_id: string;
+  sender_username: string;
+}
+
+export const sendMessage = async (
+  socket: Socket,
+  io: Server,
+  messageInfo: MessageInfo,
+) => {
   const { receiver_id, message_content, sender_id, sender_username } =
     messageInfo;
 
+  console.log('SENDmESSAGE CALISTI', messageInfo);
+
   const last_message_timestamp = new Date().getTime() / 1000;
-  console.log(last_message_timestamp);
+
   io.to(receiver_id).emit('onMessage', {
     message_content,
     receiver_id,

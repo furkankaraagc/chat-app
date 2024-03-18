@@ -16,6 +16,12 @@ const ChatLogBottom = () => {
     if (message.trim().length === 0) {
       return;
     }
+    console.log({
+      message_content: message,
+      sender_id: userInfo.userid,
+      sender_username: userInfo.username,
+      receiver_id: selectedChat.room_id,
+    });
 
     socket.emit('onMessage', {
       message_content: message,
