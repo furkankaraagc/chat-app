@@ -1,0 +1,10 @@
+version: '1'
+
+services:
+  app:
+    image: nextjs-dev-i
+    container_name: nextjs-dev-c
+    build:
+      context: .
+      # target: production
+    

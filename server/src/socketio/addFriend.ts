@@ -1,14 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 import pool from '../db';
 import redisClient from '../redis/redis';
+import { createFriendList } from './createFriendList';
+import { updateOtherUserFriendList } from './updateOtherUserFriendList';
 
 export const addFriend = async (
   socket: any,
-  friendName: any,
-  callback: any,
+  friendName: string,
+  callback: ({}) => void,
+  io: any,
 ) => {
   if (friendName === socket.user.username) {
-    return callback({ isDone: false, errorMessage: 'cannot add yourself' });
+    return callback({ isDone: false, errorMessage: 'Cannot add yourself' });
   }
   const friendInfo = await redisClient.hgetall(`userid:${friendName}`);
   if (!friendInfo.userid) {
@@ -24,7 +27,7 @@ export const addFriend = async (
   }
 
   const room_id = uuidv4();
-  const deneme = 'bu olmayacakss';
+  const deneme = 'bu olmayacak';
 
   await pool.query(
     `INSERT INTO rooms(room_id,room_name,is_group) VALUES($1,$2,$3)`,
@@ -63,4 +66,8 @@ export const addFriend = async (
 
   await redisClient.hset(`userid:${socket.user.username}`, `${room_id}`, 0);
   await redisClient.hset(`userid:${friendName}`, `${room_id}`, 0);
+
+  createFriendList(socket);
+  updateOtherUserFriendList(socket, room_id, friendName);
+  return callback({ isDone: false, errorMessage: `${friendName} added!` });
 };
