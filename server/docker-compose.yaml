@@ -24,6 +24,6 @@ services:
       POSTGRES_USER: furkankaraagac
       POSTGRES_DB: dockerpostgres
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data:z
     ports:
       - 5432:5432
