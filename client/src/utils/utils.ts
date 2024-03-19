@@ -1,1 +1,1 @@
-export const baseURL: string = 'http://3.76.103.161';
+export const baseURL: string = 'https://octarine.site';
