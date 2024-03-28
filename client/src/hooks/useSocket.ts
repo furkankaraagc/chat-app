@@ -2,23 +2,24 @@ import { pushMessageToChatLog } from '@/redux/features/chatSlice';
 import { setFriendList, setUserInfo } from '@/redux/features/userSlice';
 import { RootState } from '@/redux/store';
 import socket from '@/socket';
-import { useEffect, useState } from 'react';
+import { FriendList } from '@/types/chatTypes';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 const useSocket = () => {
-  const [onlineList, setOnlineList] = useState<any>([]);
   const { friendList, userInfo } = useSelector(
     (state: RootState) => state.userSlice.value,
   );
   const dispatch = useDispatch();
-  console.log(onlineList);
 
   useEffect(() => {
     socket.connect();
 
     socket.on('connected', (status, username) => {
       if (friendList.length > 0) {
-        const copyFriendList = friendList.map((item: any) => ({ ...item }));
-        copyFriendList.map((item: any) => {
+        const copyFriendList = friendList.map((item: FriendList) => ({
+          ...item,
+        }));
+        copyFriendList.map((item: FriendList) => {
           if (item.username === username) {
             item.connected = status;
           }
@@ -27,7 +28,6 @@ const useSocket = () => {
       }
     });
     socket.on('friends', (friendList) => {
-      console.log('friendList', friendList);
       dispatch(setFriendList(friendList));
     });
     socket.on('userInfo', (userid, username) => {
@@ -41,13 +41,14 @@ const useSocket = () => {
       console.log(err);
     });
     socket.on('onMessage', (messageInfo) => {
-      console.log(messageInfo);
       dispatch(pushMessageToChatLog(messageInfo));
     });
     socket.on('incrNotify', (receiver_id, notify) => {
       if (friendList.length > 0) {
-        const copyFriendList = friendList.map((item: any) => ({ ...item }));
-        copyFriendList.map((item: any) => {
+        const copyFriendList = friendList.map((item: FriendList) => ({
+          ...item,
+        }));
+        copyFriendList.map((item: FriendList) => {
           if (item.room_id === receiver_id) {
             let n = Number(item.notification);
             n += notify;
@@ -59,8 +60,10 @@ const useSocket = () => {
     });
     socket.on('clearNotify', (room_id) => {
       if (friendList.length > 0) {
-        const copyFriendList = friendList.map((item: any) => ({ ...item }));
-        copyFriendList.map((item: any) => {
+        const copyFriendList = friendList.map((item: FriendList) => ({
+          ...item,
+        }));
+        copyFriendList.map((item: FriendList) => {
           if (item.room_id === room_id) {
             item.notification = 0;
           }
@@ -77,8 +80,10 @@ const useSocket = () => {
         last_message_timestamp,
       ) => {
         if (friendList.length > 0) {
-          const copyFriendList = friendList.map((item: any) => ({ ...item }));
-          copyFriendList.map((item: any) => {
+          const copyFriendList = friendList.map((item: FriendList) => ({
+            ...item,
+          }));
+          copyFriendList.map((item: FriendList) => {
             if (item.room_id === receiver_id) {
               item.last_message = message_content;
               item.last_message_timestamp = last_message_timestamp;

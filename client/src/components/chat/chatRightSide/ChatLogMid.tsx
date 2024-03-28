@@ -5,6 +5,7 @@ import { baseURL } from '@/utils/utils';
 import { getCookie } from 'cookies-next';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ChatLog } from '../../../types/chatTypes';
 import ChatLogMessage from './ChatLogMessage';
 
 const ChatLogMid = () => {
@@ -62,9 +63,9 @@ const ChatLogMid = () => {
   }, [chatLog]);
 
   return (
-    <div className=' h-[80%] overflow-auto flex flex-col gap-3 p-10 bg-black'>
-      {chatLog &&
-        chatLog.map((item: any, index: number) => {
+    <div className=' h-[85%] overflow-auto flex flex-col gap-3 py-10 px-[10px] sm:px-[50px] md:px-[100px] xl:px-[200px] bg-[url(/chat1.jpg)] '>
+      {chatLog.length > 0 &&
+        chatLog.map((item: ChatLog, index: number) => {
           return <ChatLogMessage key={index} item={item} />;
         })}
       <div ref={ref}></div>

@@ -1,16 +1,21 @@
+import { FriendList } from '@/types/chatTypes';
+import { UserInfo } from '@/types/userTypes';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface InitialState {
   value: {
-    friendList: string[];
-    userInfo: any;
+    friendList: FriendList[];
+    userInfo: UserInfo;
   };
 }
 
 const initialState = {
   value: {
     friendList: [],
-    userInfo: '',
+    userInfo: {
+      userid: '',
+      username: '',
+    },
   },
 } as InitialState;
 

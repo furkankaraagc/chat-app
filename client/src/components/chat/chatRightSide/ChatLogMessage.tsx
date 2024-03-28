@@ -1,8 +1,9 @@
 import { RootState } from '@/redux/store';
+import { ChatLog } from '@/types/chatTypes';
 import { useSelector } from 'react-redux';
 
 interface Props {
-  item: any;
+  item: ChatLog;
 }
 
 const ChatLogMessage = ({ item }: Props) => {

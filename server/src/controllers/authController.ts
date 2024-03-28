@@ -8,7 +8,7 @@ import { getJwt, jwtSign, jwtVerify } from '../jwt/jwtAuth';
 dotenv.config();
 
 export const sessionHandler = async (req: Request, res: Response) => {
-  const token: any = getJwt(req);
+  const token = getJwt(req);
   if (!token) {
     return res.json({ loggedIn: false, error: 'no token' });
   }

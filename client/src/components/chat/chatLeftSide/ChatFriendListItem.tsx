@@ -1,17 +1,22 @@
 import { setSelectedChat } from '@/redux/features/chatSlice';
 import { RootState } from '@/redux/store';
+import { FriendList } from '@/types/chatTypes';
 import { formatDistanceToNow, fromUnixTime } from 'date-fns';
 
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 
-const ChatFriendListItem = ({ item }: any) => {
+interface Props {
+  item: FriendList;
+}
+
+const ChatFriendListItem = ({ item }: Props) => {
   const dispatch = useDispatch();
   const { selectedChat } = useSelector(
     (state: RootState) => state.chatSlice.value,
   );
 
-  const formatTime = (unix: any): any => {
+  const formatTime = (unix: string) => {
     const numberUnix = Number(unix);
     const x = fromUnixTime(numberUnix);
     const providedDate = new Date(x);
@@ -21,17 +26,21 @@ const ChatFriendListItem = ({ item }: any) => {
   return (
     <article
       onClick={() => dispatch(setSelectedChat(item))}
-      className={` relative ease-in-out flex justify-between  text-white border-b border-gray-500 p-4 cursor-pointer ${
+      className={` relative ease-in-out flex justify-between max-h-[100px] border-gray-500 p-4 cursor-pointer rounded-2xl  ${
         selectedChat.username === item.username
-          ? 'bg-[#2A3942]'
-          : 'hover:bg-[#1F2C33]'
+          ? 'bg-[#3390EC] text-white'
+          : 'hover:bg-gray-200 text-black '
       }  active:opacity-85 `}
     >
       <section className='flex gap-3'>
         <section className='relative'>
-          <div className='rounded-full h-16 w-16 bg-gray-600 flex justify-center items-center'>
-            <Image src={'/person.svg'} alt='' width={50} height={50} />
-          </div>
+          <Image
+            className='rounded-full min-h-16 min-w-16 object-cover'
+            src={'/auth6.png'}
+            alt=''
+            width={50}
+            height={50}
+          />
           {item.connected === 'true' && (
             <div className='absolute bottom-0 right-1 h-5 w-5 bg-green-500 rounded-full border-[2px] border-black'></div>
           )}
@@ -40,21 +49,29 @@ const ChatFriendListItem = ({ item }: any) => {
           <h2>{item.username}</h2>
           {item.last_message && (
             <section
-              className={`text-sm ${
-                Number(item.notification) !== 0
-                  ? 'text-white'
-                  : 'text-gray-300 '
+              className={`text-sm  ${
+                selectedChat.username === item.username
+                  ? 'text-gray-200'
+                  : 'text-gray-500'
               } flex`}
             >
               <p>{item.last_message_by}:</p>
-              <p className='truncate max-w-[100px]'>{item.last_message}</p>
+              <p className='truncate max-w-[40px] lg:max-w-[60px] xl:max-w-[100px]'>
+                {item.last_message}
+              </p>
             </section>
           )}
         </article>
       </section>
 
       {item.last_message_timestamp && (
-        <span className='text-sm max-w-[70px]  text-gray-300'>
+        <span
+          className={`text-sm max-w-[70px]   ${
+            selectedChat.username === item.username
+              ? 'text-gray-200'
+              : 'text-gray-500'
+          }`}
+        >
           {formatTime(item.last_message_timestamp)}
         </span>
       )}

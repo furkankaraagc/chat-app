@@ -1,14 +1,15 @@
+import { ChatLog, SelectedChat } from '@/types/chatTypes';
 import { createSlice } from '@reduxjs/toolkit';
 interface InitialState {
   value: {
-    selectedChat: any;
-    chatLog: any;
+    selectedChat: SelectedChat;
+    chatLog: ChatLog[];
   };
 }
 
 const initialState = {
   value: {
-    selectedChat: '',
+    selectedChat: { username: '', room_id: '' },
     chatLog: [],
   },
 } as InitialState;

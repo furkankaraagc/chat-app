@@ -1,18 +1,27 @@
 import { useState } from 'react';
-interface OnFetchResult {
-  data: any;
-  error: any;
-  setError: React.Dispatch<React.SetStateAction<any>>;
+interface OnFetchResult<T> {
+  data: T[] | undefined;
+  error:
+    | { usernameError?: string; passwordError?: string; error?: string }
+    | undefined;
+
+  setError: React.Dispatch<
+    React.SetStateAction<{
+      usernameError?: string;
+      passwordError?: string;
+      error?: string;
+    }>
+  >;
   loading: boolean;
-  handleFetch: (endpoint: string, body: any) => Promise<any>;
+  handleFetch: (endpoint: string, body: T) => Promise<any>;
 }
 
-const useOnFetch = (): OnFetchResult => {
-  const [data, setData] = useState<any>([]);
-  const [error, setError] = useState<any>('');
+const useOnFetch = <T>(): OnFetchResult<T> => {
+  const [data, setData] = useState<T[] | undefined>([]);
+  const [error, setError] = useState<any>({});
   const [loading, setLoading] = useState(false);
 
-  async function handleFetch(endpoint: string, body: any) {
+  async function handleFetch(endpoint: string, body: T) {
     setLoading(true);
     try {
       const res = await fetch(`${endpoint}`, {
@@ -22,7 +31,6 @@ const useOnFetch = (): OnFetchResult => {
           'Content-Type': 'application/json',
         },
       });
-
       if (!res.ok || res.status >= 400) {
         return setError({ error: 'Invalid username or password!' });
       }
@@ -31,7 +39,8 @@ const useOnFetch = (): OnFetchResult => {
       setError(undefined);
       return responseData;
     } catch (error: any) {
-      setError(error);
+      console.log(error);
+      setError({ error: 'Something went wrong' });
       setData(undefined);
       return error;
     } finally {

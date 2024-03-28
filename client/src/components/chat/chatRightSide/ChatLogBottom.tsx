@@ -10,18 +10,12 @@ const ChatLogBottom = () => {
     (state: RootState) => state.chatSlice.value,
   );
   const { userInfo } = useSelector((state: RootState) => state.userSlice.value);
-  const sendMessage = async (e: any) => {
+  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (message.trim().length === 0) {
       return;
     }
-    console.log({
-      message_content: message,
-      sender_id: userInfo.userid,
-      sender_username: userInfo.username,
-      receiver_id: selectedChat.room_id,
-    });
 
     socket.emit('onMessage', {
       message_content: message,
@@ -33,11 +27,11 @@ const ChatLogBottom = () => {
   };
 
   return (
-    <div className='h-[10%] flex justify-center items-center px-10  '>
+    <div className='h-[7%] flex justify-center items-center px-10 '>
       <form className=' flex gap-2 items-center w-[80%]' onSubmit={sendMessage}>
         <input
           onChange={(e) => setMessage(e.target.value)}
-          className='bg-[#1F2C33] rounded-md p-3 w-full text-white outline-none'
+          className='bg-gray-200 rounded-2xl p-3 w-full text-black outline-none'
           placeholder='Type a message'
           type='text'
           value={message}
@@ -45,7 +39,7 @@ const ChatLogBottom = () => {
         <button type='submit'>
           <Image
             className='w-[40px] h-[40px] '
-            src={'/send3.svg'}
+            src={'/send.svg'}
             alt=''
             width={100}
             height={100}

@@ -28,7 +28,7 @@ const Register = () => {
       router.push('/');
     }
   };
-  console.log(error);
+  // console.log(error);
   return (
     <form onSubmit={handleRegister} className='w-[400px] flex flex-col gap-5'>
       <fieldset className='flex flex-col gap-3'>

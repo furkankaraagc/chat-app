@@ -17,8 +17,6 @@ export const sendMessage = async (
   const { receiver_id, message_content, sender_id, sender_username } =
     messageInfo;
 
-  console.log('SENDmESSAGE CALISTI', messageInfo);
-
   const last_message_timestamp = new Date().getTime() / 1000;
 
   io.to(receiver_id).emit('onMessage', {

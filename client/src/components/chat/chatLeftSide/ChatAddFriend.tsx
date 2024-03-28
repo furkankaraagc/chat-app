@@ -18,7 +18,6 @@ const ChatAddFriend = () => {
     );
     setValue('');
   };
-  console.log(status, error);
   return (
     <div className=''>
       {status ? (
@@ -30,13 +29,13 @@ const ChatAddFriend = () => {
       <form className='p-5 flex gap-2' onSubmit={handleAddFriend}>
         <input
           onChange={(e) => setValue(e.target.value)}
-          className='bg-[#1F2C33] h-10 rounded-md p-2 outline-none'
+          className='bg-gray-200 h-10 rounded-2xl text-black p-3 outline-none'
           type='text'
           placeholder='add a friend'
           value={value}
         />
         <button
-          className=' p-3  h-10 w-10  bg-[#2A3942] rounded-md'
+          className=' p-3  h-10 w-10  bg-gray-200 rounded-full'
           type='submit'
         >
           <Image src={'/plus.svg'} alt='' width={20} height={20} />

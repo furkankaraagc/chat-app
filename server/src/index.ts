@@ -13,7 +13,6 @@ import { joinAfterFriendAdd } from './socketio/joinAfterFriendAdd';
 import notificationHandler from './socketio/notificationHandler';
 import { onDisconnect } from './socketio/onDisconnect';
 import { MessageInfo, sendMessage } from './socketio/sendMessage';
-
 const app = express();
 const httpServer = createServer(app);
 
@@ -23,7 +22,6 @@ app.use(express.json());
 
 app.use('/auth', router);
 app.use('/', chatRouter);
-
 const io = new Server(httpServer, { cors: corsConfig });
 io.use(authorizeUser);
 io.on('connection', (socket: any) => {
@@ -50,7 +48,7 @@ const dbStart = async () => {
   while (retires) {
     try {
       const db = await pool.connect();
-      console.log(db);
+      console.log('postgres running');
       break;
     } catch (err) {
       console.log(err);
@@ -60,7 +58,6 @@ const dbStart = async () => {
     }
   }
 };
-console.log('envindex', process.env.DATABASE_NAME);
 
 dbStart();
 

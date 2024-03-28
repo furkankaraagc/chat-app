@@ -1,6 +1,7 @@
 import useSocket from '@/hooks/useSocket';
 import { RootState } from '@/redux/store';
 
+import { FriendList } from '@/types/chatTypes';
 import { useSelector } from 'react-redux';
 import ChatFriendListItem from './ChatFriendListItem';
 
@@ -12,9 +13,9 @@ const ChatFriendList = () => {
   useSocket();
 
   return (
-    <div>
+    <div className='px-2'>
       {friendList &&
-        friendList.map((item: any, index: number) => (
+        friendList.map((item: FriendList, index: number) => (
           <ChatFriendListItem key={index} item={item} />
         ))}
     </div>

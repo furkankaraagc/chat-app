@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
+interface FetchResult<T> {
+  data: T[] | undefined;
+  error: {} | undefined;
+  loading: boolean;
+}
 
-const useFetch = async (endpoint: string) => {
-  const [data, setData] = useState<any>([]);
-  const [error, setError] = useState<string | undefined>('');
+const useFetch = <T>(endpoint: string): FetchResult<T> => {
+  const [data, setData] = useState<T[] | undefined>([]);
+  const [error, setError] = useState<{} | undefined>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +24,7 @@ const useFetch = async (endpoint: string) => {
         }
         return res.json();
       })
-      .then((data) => {
+      .then((data: T[]) => {
         if (!ignore) {
           setData(data);
           setError(undefined);

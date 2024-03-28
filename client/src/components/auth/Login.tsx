@@ -33,7 +33,9 @@ const Login = () => {
             setUserInfo((prev) => ({ ...prev, username: e.target.value }))
           }
           className={`input-auth ${
-            error && 'border-red-500 hover:border-red-500 focus:border-red-500'
+            error &&
+            error.error &&
+            'border-red-500 hover:border-red-500 focus:border-red-500'
           }`}
           name='username'
           type='text'
