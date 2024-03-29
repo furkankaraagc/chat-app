@@ -3,11 +3,12 @@ import Image from 'next/image';
 const AuthImage = () => {
   return (
     <Image
-      className='h-screen object-cover w-[150px]  border-gray-50 '
+      className='h-screen object-cover w-[150px]. border-r  border-gray-50 '
       src={'/chat1.jpg'}
       alt=''
-      width={700}
+      width={1500}
       height={1080}
+      quality={100}
       priority={true}
     />
   );
