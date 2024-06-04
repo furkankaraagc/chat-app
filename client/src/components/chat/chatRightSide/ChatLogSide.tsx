@@ -1,16 +1,16 @@
-import { RootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
+import {RootState} from '@/redux/store';
+import {useSelector} from 'react-redux';
 import ChatImage from '../ChatImage';
 import ChatLogBottom from './ChatLogBottom';
 import ChatLogMid from './ChatLogMid';
 import ChatLogTop from './ChatLogTop';
 
 const ChatLogSide = () => {
-  const { selectedChat } = useSelector(
-    (state: RootState) => state.chatSlice.value,
+  const {selectedChat} = useSelector(
+    (state: RootState) => state.chatSlice.value
   );
   return (
-    <div className='   w-full h-screen '>
+    <div className='w-full h-screen '>
       {selectedChat.username ? (
         <>
           <ChatLogTop />

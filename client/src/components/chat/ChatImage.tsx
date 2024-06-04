@@ -1,14 +1,12 @@
 import Image from 'next/image';
+import chatImage from '../../../public/chat1.jpg';
 
 const ChatImage = () => {
   return (
     <Image
       className=' h-full object-cover border-r w-full brightness-75 border-gray-50 '
-      src={'/chat1.jpg'}
+      src={chatImage}
       alt=''
-      width={1500}
-      height={1080}
-      quality={100}
       priority={true}
     />
   );

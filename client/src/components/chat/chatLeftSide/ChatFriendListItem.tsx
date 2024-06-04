@@ -1,26 +1,27 @@
-import { setSelectedChat } from '@/redux/features/chatSlice';
-import { RootState } from '@/redux/store';
-import { FriendList } from '@/types/chatTypes';
-import { formatDistanceToNow, fromUnixTime } from 'date-fns';
+import {setSelectedChat} from '@/redux/features/chatSlice';
+import {RootState} from '@/redux/store';
+import {FriendList} from '@/types/chatTypes';
+import {formatDistanceToNow, fromUnixTime} from 'date-fns';
 
 import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import profileImage from '../../../../public/auth6.png';
 
 interface Props {
   item: FriendList;
 }
 
-const ChatFriendListItem = ({ item }: Props) => {
+const ChatFriendListItem = ({item}: Props) => {
   const dispatch = useDispatch();
-  const { selectedChat } = useSelector(
-    (state: RootState) => state.chatSlice.value,
+  const {selectedChat} = useSelector(
+    (state: RootState) => state.chatSlice.value
   );
 
   const formatTime = (unix: string) => {
     const numberUnix = Number(unix);
     const x = fromUnixTime(numberUnix);
     const providedDate = new Date(x);
-    return formatDistanceToNow(providedDate, { addSuffix: true });
+    return formatDistanceToNow(providedDate, {addSuffix: true});
   };
 
   return (
@@ -35,11 +36,10 @@ const ChatFriendListItem = ({ item }: Props) => {
       <section className='flex gap-3'>
         <section className='relative'>
           <Image
-            className='rounded-full min-h-16 min-w-16 object-cover'
-            src={'/auth6.png'}
+            className='rounded-full min-h-16 min-w-16 max-h-16 max-w-16 object-cover'
+            src={profileImage}
             alt=''
-            width={50}
-            height={50}
+            priority={true}
           />
           {item.connected === 'true' && (
             <div className='absolute bottom-0 right-1 h-5 w-5 bg-green-500 rounded-full border-[2px] border-black'></div>

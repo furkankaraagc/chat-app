@@ -10,4 +10,7 @@
   .button-dark {
     @apply p-3 rounded-lg bg-[#0E0C22] flex items-center justify-center hover:opacity-90 duration-150 ease-in-out;
   }
+  .background-chat {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  }
 }

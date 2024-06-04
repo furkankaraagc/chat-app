@@ -1,15 +1,15 @@
-import { RootState } from '@/redux/store';
+import {RootState} from '@/redux/store';
 import socket from '@/socket';
 import Image from 'next/image';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import {useState} from 'react';
+import {useSelector} from 'react-redux';
 
 const ChatLogBottom = () => {
   const [message, setMessage] = useState('');
-  const { selectedChat } = useSelector(
-    (state: RootState) => state.chatSlice.value,
+  const {selectedChat} = useSelector(
+    (state: RootState) => state.chatSlice.value
   );
-  const { userInfo } = useSelector((state: RootState) => state.userSlice.value);
+  const {userInfo} = useSelector((state: RootState) => state.userSlice.value);
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
