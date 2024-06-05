@@ -7,6 +7,7 @@ const AuthImage = () => {
       className='h-screen object-cover w-[150px] border-r  border-gray-50 '
       src={chatImage}
       alt=''
+      width={600}
       priority={true}
     />
   );

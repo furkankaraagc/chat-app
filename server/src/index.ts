@@ -1,18 +1,18 @@
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
-import { createServer } from 'http';
-import { Server } from 'socket.io';
-import { corsConfig } from './config/corsConfig';
+import {createServer} from 'http';
+import {Server} from 'socket.io';
+import {corsConfig} from './config/corsConfig';
 import pool from './db';
 import router from './routes/authRouter';
 import chatRouter from './routes/chatRouter';
-import { addFriend } from './socketio/addFriend';
-import { authorizeUser } from './socketio/authorizeUser';
-import { joinAfterFriendAdd } from './socketio/joinAfterFriendAdd';
+import {addFriend} from './socketio/addFriend';
+import {authorizeUser} from './socketio/authorizeUser';
+import {joinAfterFriendAdd} from './socketio/joinAfterFriendAdd';
 import notificationHandler from './socketio/notificationHandler';
-import { onDisconnect } from './socketio/onDisconnect';
-import { MessageInfo, sendMessage } from './socketio/sendMessage';
+import {onDisconnect} from './socketio/onDisconnect';
+import {MessageInfo, sendMessage} from './socketio/sendMessage';
 const app = express();
 const httpServer = createServer(app);
 
@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use('/auth', router);
 app.use('/', chatRouter);
-const io = new Server(httpServer, { cors: corsConfig });
+const io = new Server(httpServer, {cors: corsConfig});
 io.use(authorizeUser);
 io.on('connection', (socket: any) => {
   console.log(`a user connected ${socket.id}`);
@@ -54,7 +54,7 @@ const dbStart = async () => {
       console.log(err);
       retires -= 1;
       console.log(`retires left ${retires}`);
-      await new Promise((res) => setTimeout(res, 3000));
+      await new Promise((res) => setTimeout(res, 4000));
     }
   }
 };

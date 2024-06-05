@@ -1,5 +1,6 @@
 # @w3tec
-pgdata
+pgdata/
+./pgdata
 # Logs #
 /logs
 *.log
@@ -12,7 +13,7 @@ yarn-error.log
 .env
 
 # OS generated files #
-.DS_Store
+../.DS_Store
 Thumbs.db
 .tmp/
 src/api/schema.gql
